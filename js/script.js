@@ -1,13 +1,18 @@
 // My profile info will appear here
 const overview = document.querySelector(".overview");
 
+// The repos will appear here
+const reposList = document.querySelector(".repo-list");
+
 const username = "ClariceR";
 
+// Profile info
 const getGithubProfile = async () => {
     const response = await fetch(`https://api.github.com/users/${username}`);
     const profile = await response.json();
-    // console.log(profile);
+    console.log(profile);
     displayProfileInfo(profile);
+    getRepos();
 }
 
 const displayProfileInfo = profile => {
@@ -24,6 +29,23 @@ const displayProfileInfo = profile => {
         <p><strong>Number of public repos:</strong> ${profile.public_repos}</p>
     </div> `;
     overview.append(userInfoDiv);
+}
+
+// Repos
+const getRepos = async () => {
+    const response = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
+    const repos = await response.json();
+    // console.log(repos);
+    displayRepos(repos);
+}
+
+const displayRepos = repos => {
+    for (let repo of repos) {
+        let repoLi = document.createElement('li');
+        repoLi.classList.add("repo");
+        repoLi.innerHTML = `<h3>${repo.name}</h3>`;
+        reposList.append(repoLi);
+    }
 }
 
 getGithubProfile();
