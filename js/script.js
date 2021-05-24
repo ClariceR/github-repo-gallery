@@ -1,8 +1,14 @@
-// My profile info will appear here
+// My profile info appears here
 const overview = document.querySelector(".overview");
 
-// The repos will appear here
+// Section where all repos information appear
+const allRepos = document.querySelector(".repos");
+
+// The repos list appear here
 const reposList = document.querySelector(".repo-list");
+
+// Section where individual repo data appears
+const repoData = document.querySelector(".repo-data");
 
 const username = "ClariceR";
 
@@ -31,7 +37,7 @@ const displayProfileInfo = profile => {
     overview.append(userInfoDiv);
 }
 
-// Repos
+// Get and display Repos
 const getRepos = async () => {
     const response = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
     const repos = await response.json();
@@ -47,5 +53,15 @@ const displayRepos = repos => {
         reposList.append(repoLi);
     }
 }
+
+// Get the name of the repo that was clicked on
+reposList.addEventListener("click", e => {
+    if (e.target.matches("h3")) {
+        let repoName = e.target.innerText;
+        console.log(repoName);
+    }
+})
+
+
 
 getGithubProfile();
