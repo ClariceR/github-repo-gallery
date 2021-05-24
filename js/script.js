@@ -58,10 +58,23 @@ const displayRepos = repos => {
 reposList.addEventListener("click", e => {
     if (e.target.matches("h3")) {
         let repoName = e.target.innerText;
-        console.log(repoName);
+        getRepoInfo(repoName);
     }
 })
 
-
+// Get specific repo info
+const getRepoInfo = async repoName => {
+    const response = await fetch (`https://api.github.com/repos/${username}/${repoName}`);
+    const repoInfo = await response.json();
+    console.log(repoInfo);
+    const fetchLanguages = await fetch (repoInfo.languages_url);
+    const languageData = await fetchLanguages.json();
+    console.log(languageData);
+    let languages = [];
+    for (let key in languageData) {
+        languages.push(key);
+    }
+    console.log(languages);
+}
 
 getGithubProfile();
