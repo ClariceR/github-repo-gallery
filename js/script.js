@@ -10,6 +10,9 @@ const reposList = document.querySelector(".repo-list");
 // Section where individual repo data appears
 const repoData = document.querySelector(".repo-data");
 
+// Button that will show on the repo info section
+// const backBtn = document.querySelector(".view-repos")
+
 const username = "ClariceR";
 
 // Profile info
@@ -75,6 +78,22 @@ const getRepoInfo = async repoName => {
         languages.push(key);
     }
     console.log(languages);
+    displayRepoInfo(repoInfo, languages);
+}
+
+const displayRepoInfo = (repoInfo, languages) => {
+    repoData.innerHTML = '';
+    let div = document.createElement('div');
+    div.innerHTML = `
+        <h3>Name: ${repoInfo.name}</h3>
+        <p>Description: ${repoInfo.description}</p>
+        <p>Default Branch: ${repoInfo.default_branch}</p>
+        <p>Languages: ${languages.join(", ")}</p>
+        <a class="visit" href="${repoInfo.url}" target="_blank" rel="noreferrer noopener">View repo on GitHub</a>
+    `;
+    repoData.append(div);
+    repoData.classList.remove("hide");
+    allRepos.classList.add("hide");
 }
 
 getGithubProfile();
