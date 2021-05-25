@@ -11,7 +11,10 @@ const reposList = document.querySelector(".repo-list");
 const repoData = document.querySelector(".repo-data");
 
 // Button that will show on the repo info section
-// const backBtn = document.querySelector(".view-repos")
+const backBtn = document.querySelector(".view-repos")
+
+// Input for search
+const filterInput = document.querySelector(".filter-repos");
 
 const username = "ClariceR";
 
@@ -49,6 +52,7 @@ const getRepos = async () => {
 }
 
 const displayRepos = repos => {
+    filterInput.classList.remove("hide");
     for (let repo of repos) {
         let repoLi = document.createElement('li');
         repoLi.classList.add("repo");
@@ -94,6 +98,27 @@ const displayRepoInfo = (repoInfo, languages) => {
     repoData.append(div);
     repoData.classList.remove("hide");
     allRepos.classList.add("hide");
+    backBtn.classList.remove("hide");
 }
+
+backBtn.addEventListener("click", () => {
+    allRepos.classList.remove("hide");
+    repoData.classList.add("hide");
+    backBtn.classList.add("hide");
+})
+
+filterInput.addEventListener("input", e => {
+    let valueText = e.target.value;
+    console.log(valueText);
+    let repos = document.querySelectorAll(".repo");
+    for (let repo of repos) {
+        let lower = repo.innerText.toLowerCase();
+        if (lower.includes(valueText)) {
+            repo.classList.remove("hide");
+        } else {
+            repo.classList.add("hide");
+        }
+    }
+})
 
 getGithubProfile();
