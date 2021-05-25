@@ -22,7 +22,6 @@ const username = "ClariceR";
 const getGithubProfile = async () => {
     const response = await fetch(`https://api.github.com/users/${username}`);
     const profile = await response.json();
-    console.log(profile);
     displayProfileInfo(profile);
     getRepos();
 }
@@ -47,12 +46,12 @@ const displayProfileInfo = profile => {
 const getRepos = async () => {
     const response = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
     const repos = await response.json();
-    // console.log(repos);
     displayRepos(repos);
 }
 
 const displayRepos = repos => {
     filterInput.classList.remove("hide");
+    filterInput.value = "";
     for (let repo of repos) {
         let repoLi = document.createElement('li');
         repoLi.classList.add("repo");
@@ -73,15 +72,12 @@ reposList.addEventListener("click", e => {
 const getRepoInfo = async repoName => {
     const response = await fetch (`https://api.github.com/repos/${username}/${repoName}`);
     const repoInfo = await response.json();
-    console.log(repoInfo);
     const fetchLanguages = await fetch (repoInfo.languages_url);
     const languageData = await fetchLanguages.json();
-    console.log(languageData);
     let languages = [];
     for (let key in languageData) {
         languages.push(key);
     }
-    console.log(languages);
     displayRepoInfo(repoInfo, languages);
 }
 
@@ -104,12 +100,11 @@ const displayRepoInfo = (repoInfo, languages) => {
 backBtn.addEventListener("click", () => {
     allRepos.classList.remove("hide");
     repoData.classList.add("hide");
-    backBtn.classList.add("hide");
+    backBtn.classList.add("hide"); 
 })
 
 filterInput.addEventListener("input", e => {
     let valueText = e.target.value;
-    console.log(valueText);
     let repos = document.querySelectorAll(".repo");
     for (let repo of repos) {
         let lower = repo.innerText.toLowerCase();
